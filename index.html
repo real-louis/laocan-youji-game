@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>老殘行記——清官？貪官？</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <p id="streak-toast" class="streak-toast hidden"></p>
+  <div id="level-flash" class="level-flash hidden"></div>
+  <div id="combo-toast" class="combo-toast hidden"></div>
+  <div id="lore-toast" class="lore-toast hidden"></div>
+  <button id="btn-sound" class="fab-sound" title="音效開關" aria-label="音效開關">🔊</button>
+  <button id="btn-help" class="fab-help hidden" title="遊戲說明" aria-label="遊戲說明">？</button>
+
+  <div id="app">
+    <!-- 首頁 -->
+    <section id="screen-home" class="screen active">
+      <div class="home-content">
+        <div class="seal">殘</div>
+        <h1 class="title-main">老殘行記</h1>
+        <p class="title-sub">清官？貪官？</p>
+        <p class="title-desc">以劉鶚《老殘遊記》為本之網頁桌遊</p>
+        <div id="home-meta" class="home-meta"></div>
+        <div id="home-hook" class="home-hook hidden"></div>
+        <div id="home-daily" class="home-daily"></div>
+        <div class="home-actions">
+          <button class="btn btn-primary btn-pulse hidden" id="btn-continue-save" data-action="continue-save">繼續旅程</button>
+          <button class="btn btn-primary" data-action="start">新旅程</button>
+          <button class="btn btn-secondary" data-action="rules">遊戲說明</button>
+          <button class="btn btn-secondary" data-action="settings">設定</button>
+        </div>
+        <div id="home-codex" class="home-codex"></div>
+        <div id="home-lore" class="home-lore"></div>
+        <div id="home-achievements" class="home-achievements hidden"></div>
+        <p class="home-quote">「救得了人，救不了世。」</p>
+      </div>
+    </section>
+
+    <!-- 設定 -->
+    <section id="screen-settings" class="screen">
+      <div class="panel settings-panel">
+        <h2>設定</h2>
+        <div class="settings-section">
+          <h3>遊戲資料</h3>
+          <p class="settings-desc">以下資料儲存於本機瀏覽器，不會上傳至伺服器。</p>
+          <ul class="settings-stats" id="settings-stats"></ul>
+        </div>
+        <div class="settings-section danger-zone">
+          <h3>重置進度</h3>
+          <p class="settings-desc">將清除所有遊戲進度，包含途中存檔、結局圖鑑、成就、掌故、連日遊記與今日試煉。此操作<strong>無法復原</strong>。</p>
+          <button class="btn btn-danger" id="btn-reset-all" type="button">重置全部進度</button>
+        </div>
+        <button class="btn btn-primary" data-action="settings-back">返回首頁</button>
+      </div>
+    </section>
+
+    <!-- 遊戲說明 -->
+    <section id="screen-rules" class="screen">
+      <div class="panel scroll-panel rules-panel">
+        <h2>遊戲說明</h2>
+
+        <nav class="rules-tabs" role="tablist">
+          <button class="rules-tab active" data-tab="quick" role="tab">快速開始</button>
+          <button class="rules-tab" data-tab="resources" role="tab">資源與選項</button>
+          <button class="rules-tab" data-tab="levels" role="tab">關卡一覽</button>
+          <button class="rules-tab" data-tab="endings" role="tab">結局一覽</button>
+          <button class="rules-tab" data-tab="story" role="tab">原著背景</button>
+        </nav>
+
+        <div class="rules-content">
+          <!-- 快速開始 -->
+          <div class="rules-pane active" id="pane-quick">
+            <h3>怎麼玩？</h3>
+            <ol class="steps-list">
+              <li>點選<strong>「開始遊戲」</strong>，進入遊記路線地圖。</li>
+              <li>點選<strong>當前關卡</strong>（高亮顯示者），進入事件情境。</li>
+              <li>閱讀情境後，從<strong>二至三個選項</strong>中擇一；部分選項需達到指定資源方可解鎖。</li>
+              <li>選擇後會顯示<strong>結果回饋</strong>，並改變仁心、洞察、名聲（各 0～5）。</li>
+              <li>點<strong>「繼續」</strong>完成本關所有事件，回到地圖前往下一關。</li>
+              <li>通過五關後，依最終資源判定<strong>結局</strong>；可「再玩一次」嘗試不同路線。</li>
+            </ol>
+
+            <h3>介面說明</h3>
+            <ul class="tips-list">
+              <li><span class="res-icon ren">仁</span><span class="res-icon dong">察</span><span class="res-icon ming">名</span>——畫面右上角為三種資源數值</li>
+              <li><strong>🔊／🔇</strong>——右下浮動按鈕可開關古琴風格音效</li>
+              <li><strong>？</strong>——遊戲進行中可隨時開啟本說明頁</li>
+              <li>灰色鎖定選項——需累積足夠資源後方可選取</li>
+              <li>選項旁標示 <span class="effect-tag ren up">仁+1</span> 等為資源預覽</li>
+              <li>第一關後可選<strong>入城</strong>或<strong>登山</strong>路線，影響後續關卡順序</li>
+              <li>每關可使用一次道具（醫箱、詩箋、銀兩）</li>
+              <li>城內關可<strong>翻面</strong>識破清官真面目</li>
+              <li><strong>途中存檔</strong>：每次選擇自動保存，首頁可「繼續旅程」</li>
+              <li><strong>連日遊記</strong>：每日首次新旅程有資源加成（連續天數越多越強）</li>
+              <li><strong>結局圖鑑</strong>：收集全部結局，提升遊記完成度</li>
+              <li><strong>命途傾向</strong>：事件頁顯示目前最接近的結局機率</li>
+              <li><strong>心悟連貫</strong>：連續三次同方向選擇，額外 +1 資源</li>
+              <li><strong>途中際遇</strong>：關卡間隨機遭遇額外事件</li>
+              <li><strong>今日試煉</strong>：每日一項挑戰，通關可完成</li>
+              <li><strong>掌故圖鑑</strong>：關鍵抉擇解鎖《老殘遊記》原文掌故</li>
+            </ul>
+
+            <div class="rules-example">
+              <h4>範例</h4>
+              <p>大明湖關卡選「與舟子攀談」→ 洞察 +2 → 後續較易解鎖「細審案情」等進階選項，有助達成「俠醫之名」結局。</p>
+            </div>
+          </div>
+
+          <!-- 資源與選項 -->
+          <div class="rules-pane" id="pane-resources">
+            <h3>三種資源</h3>
+            <p class="pane-intro">每項資源初始為 <strong>3</strong>，範圍 <strong>0～5</strong>。每次選擇可能 +1、-1 或 ±2，請謹慎取捨。</p>
+            <ul class="resource-list detailed">
+              <li>
+                <span class="res-icon ren">仁</span>
+                <div>
+                  <strong>仁心</strong>
+                  <p>濟世同情，願為百姓付出。選擇義診、救人、仗義行動會提升；冷漠疏離則下降。</p>
+                </div>
+              </li>
+              <li>
+                <span class="res-icon dong">察</span>
+                <div>
+                  <strong>洞察</strong>
+                  <p>看透官場表象與冤情真相。打聽內情、暗中查訪會提升；輕信「清官」之名則下降。</p>
+                </div>
+              </li>
+              <li>
+                <span class="res-icon ming">名</span>
+                <div>
+                  <strong>名聲</strong>
+                  <p>江湖與士林的評價。與貴人交往、呈狀官府可提升；得罪權貴、冒險救人可能下降。</p>
+                </div>
+              </li>
+            </ul>
+
+            <h3>解鎖條件</h3>
+            <p>部分選項標示「需要：洞察 ≥ 4」等條件，表示當前資源未達標時無法選取。建議前幾關多累積洞察，以便在黑龍潭關做出關鍵抉擇。</p>
+
+            <h3>策略提示</h3>
+            <ul class="tips-list">
+              <li>想達成<strong>俠醫之名</strong>：維持高仁心與高洞察，多選救人、查訪類選項。</li>
+              <li>避免<strong>誤入官場</strong>：勿輕信清官表象，少選「相信清名」「勸官勿多言」類選項。</li>
+              <li>想解鎖隱藏選項：第二關前盡量讓洞察 ≥ 4。</li>
+            </ul>
+          </div>
+
+          <!-- 關卡一覽 -->
+          <div class="rules-pane" id="pane-levels">
+            <h3>五關路線</h3>
+            <table class="rules-table">
+              <thead>
+                <tr><th>關卡</th><th>地點</th><th>事件數</th><th>主題</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>濟南·大明湖</td><td>1</td><td>山水寫景，初識世道</td></tr>
+                <tr><td>2</td><td>濟南·城內</td><td>2</td><td>清官表象，冤訟伏筆</td></tr>
+                <tr><td>3</td><td>泰安·泰山</td><td>2</td><td>自然與人情，論及官場</td></tr>
+                <tr><td>4</td><td>泰安·黑龍潭</td><td>2</td><td>白玲瓏冤案，全書批判核心</td></tr>
+                <tr><td>5</td><td>歸途·離去途中</td><td>2</td><td>回望旅程，總結己身</td></tr>
+              </tbody>
+            </table>
+            <p class="pane-note">每關完成後地圖上會顯示 ✓，需依序進行，無法跳關。</p>
+          </div>
+
+          <!-- 結局一覽 -->
+          <div class="rules-pane" id="pane-endings">
+            <h3>六種結局</h3>
+            <p class="pane-intro">通關後依<strong>最終資源</strong>判定結局（優先順序由上而下）。</p>
+            <table class="rules-table endings-table">
+              <thead>
+                <tr><th>結局</th><th>條件</th><th>意涵</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>髮衝冠</strong> <span class="hidden-tag">隱藏</span></td>
+                  <td>仁、察、名皆 5，且黑龍潭夜遁救人</td>
+                  <td>至仁至察，見義勇為之極</td>
+                </tr>
+                <tr>
+                  <td><strong>俠醫之名</strong></td>
+                  <td>仁心 ≥ 4 且 洞察 ≥ 4</td>
+                  <td>救人無數，卻嘆國事難挽</td>
+                </tr>
+                <tr>
+                  <td><strong>名士老殘</strong></td>
+                  <td>名聲 ≥ 4 且 仁心 ≤ 2</td>
+                  <td>名重於仁，百姓未必受益</td>
+                </tr>
+                <tr>
+                  <td><strong>誤入官場</strong></td>
+                  <td>洞察 ≤ 1</td>
+                  <td>被清官表象所惑，未能辨冤</td>
+                </tr>
+                <tr>
+                  <td><strong>飄然遠去</strong></td>
+                  <td>仁、察、名皆 ≤ 2</td>
+                  <td>疏離自保，不問世事</td>
+                </tr>
+                <tr>
+                  <td><strong>江湖行醫</strong></td>
+                  <td>其餘情況</td>
+                  <td>中庸之路，但問眼前</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="pane-note">同一遊戲可重玩多次，嘗試不同選項組合以解鎖各結局。</p>
+          </div>
+
+          <!-- 原著背景 -->
+          <div class="rules-pane" id="pane-story">
+            <h3>故事背景</h3>
+            <p>清末江湖醫生「老殘」遊歷山東，見官場百態、民間疾苦。劉鶚《老殘遊記》（1903）以寫景與批判並重，開卷即描寫大明湖風光，後半則揭露冤獄與吏治之惡。</p>
+
+            <h3>全書要旨</h3>
+            <blockquote class="rules-quote">「酷吏之害，有甚於貪。」</blockquote>
+            <p>劉鶚指出：過於剛烈、動輒用酷刑的「清官」，有時比貪官更可怕。書中老殘有仁心與技藝，卻無力翻轉體制——是「俠而無力」的知識分子形象。</p>
+
+            <h3>遊戲與原著</h3>
+            <ul class="tips-list">
+              <li>仁心、洞察的取捨，呼應老殘「救得了人、救不了世」的困境。</li>
+              <li>黑龍潭關對應白玲瓏冤案，為全書批判最烈處。</li>
+              <li>各結局並無優劣，呈現不同詮釋路徑。</li>
+            </ul>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-rules-back" data-action="rules-back">返回</button>
+      </div>
+    </section>
+
+    <!-- 首次教學 -->
+    <div id="tutorial-overlay" class="overlay hidden">
+      <div class="tutorial-card panel">
+        <h2>歡迎踏上老殘之旅</h2>
+        <p>你將扮演江湖醫生<strong>老殘</strong>，沿劉鶚《老殘遊記》路線遊歷山東五地。</p>
+        <ul class="tutorial-points">
+          <li>每次選擇會改變 <span class="res-icon ren">仁</span>仁心、<span class="res-icon dong">察</span>洞察、<span class="res-icon ming">名</span>名聲</li>
+          <li>通關後依資源組合解鎖不同結局</li>
+          <li>點右下角 <strong>？</strong> 可隨時查看完整說明</li>
+        </ul>
+        <label class="sound-pref">
+          <input type="checkbox" id="tutorial-sound" checked>
+          開啟古琴風格音效
+        </label>
+        <button class="btn btn-primary" id="btn-tutorial-start">出發</button>
+      </div>
+    </div>
+
+    <!-- 路線分支 -->
+    <section id="screen-branch" class="screen">
+      <div class="branch-panel panel">
+        <h2 class="branch-title">岔路抉擇</h2>
+        <p class="branch-source">《老殘遊記》遊記路線</p>
+        <div class="event-text scroll-text" id="branch-text"></div>
+        <div class="choices" id="branch-choices"></div>
+        <div class="feedback hidden" id="branch-feedback-wrap">
+          <p class="feedback-text" id="branch-feedback"></p>
+          <button class="btn btn-primary" id="btn-branch-continue">繼續旅程</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 地圖 -->
+    <section id="screen-map" class="screen">
+      <header class="game-header">
+        <h2>遊記路線</h2>
+        <div class="resource-bar" id="resource-bar-map">
+          <span class="res-item" title="仁心"><span class="res-icon ren">仁</span><span id="res-ren-map">3</span></span>
+          <span class="res-item" title="洞察"><span class="res-icon dong">察</span><span id="res-dong-map">3</span></span>
+          <span class="res-item" title="名聲"><span class="res-icon ming">名</span><span id="res-ming-map">3</span></span>
+        </div>
+      </header>
+      <div class="map-container">
+        <div class="map-path" id="map-path"></div>
+      </div>
+      <p class="map-hint" id="map-hint">點選當前關卡以繼續旅程</p>
+      <div id="encounter-overlay" class="encounter-overlay hidden">
+        <div class="encounter-card panel">
+          <p class="encounter-tag">✦ 途中際遇</p>
+          <div class="encounter-scene" id="encounter-scene"></div>
+          <p class="encounter-text" id="encounter-text"></p>
+          <div class="choices" id="encounter-choices"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 事件進行 -->
+    <section id="screen-event" class="screen">
+      <header class="game-header">
+        <div class="level-info">
+          <span class="level-badge" id="level-badge">關卡 1</span>
+          <span class="level-name" id="level-name">大明湖</span>
+        </div>
+        <div class="resource-bar" id="resource-bar-event">
+          <span class="res-item"><span class="res-icon ren">仁</span><span id="res-ren">3</span></span>
+          <span class="res-item"><span class="res-icon dong">察</span><span id="res-dong">3</span></span>
+          <span class="res-item"><span class="res-icon ming">名</span><span id="res-ming">3</span></span>
+        </div>
+      </header>
+
+      <div id="combo-bar" class="combo-bar hidden"></div>
+      <div id="fate-tracker" class="fate-tracker"></div>
+      <div class="items-bar" id="items-bar"></div>
+      <p class="item-toast hidden" id="item-toast"></p>
+
+      <div class="event-panel">
+        <div id="npc-flip" class="npc-flip hidden"></div>
+        <div class="event-source" id="event-source"></div>
+        <div class="event-scene" id="event-scene"></div>
+        <div class="event-text scroll-text" id="event-text"></div>
+
+        <div class="choices" id="choices"></div>
+
+        <div class="feedback hidden" id="feedback">
+          <p class="feedback-text" id="feedback-text"></p>
+          <button class="btn btn-primary" id="btn-continue">繼續</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 結局 -->
+    <section id="screen-ending" class="screen">
+      <div class="ending-panel">
+        <div class="ending-seal" id="ending-seal">記</div>
+        <h2 class="ending-title" id="ending-title"></h2>
+        <p class="ending-desc" id="ending-desc"></p>
+        <div class="ending-stats" id="ending-stats"></div>
+        <div class="journey-recap-wrap">
+          <h3 class="recap-title">旅程回顧</h3>
+          <div id="journey-recap" class="journey-recap"></div>
+        </div>
+        <div id="ending-achievements"></div>
+        <div id="ending-daily-result" class="ending-daily-result hidden"></div>
+        <div id="ending-lore-new" class="ending-lore-new hidden"></div>
+        <div id="ending-nearmiss" class="ending-nearmiss hidden"></div>
+        <div id="ending-codex" class="ending-codex"></div>
+        <p class="ending-quote" id="ending-quote"></p>
+        <div class="ending-actions">
+          <button class="btn btn-primary btn-pulse" data-action="restart">再探一局</button>
+          <button class="btn btn-secondary" data-action="back-home">返回首頁</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/gameData.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/retention.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
