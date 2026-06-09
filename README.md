@@ -2,14 +2,21 @@
 
 以劉鶚《老殘遊記》為本的網頁版桌遊。扮演江湖醫生「老殘」遊歷山東，在仁心、洞察、名聲之間做出取捨，體會「酷吏之害，有甚於貪」。
 
-## 線上遊玩
+## 線上遊玩（分享此連結給他人）
 
-將此儲存庫開啟 **GitHub Pages** 後，即可透過網址直接遊玩。
+**https://real-louis.github.io/laocan-youji-game/**
 
-## 本機遊玩
+任何人用瀏覽器開啟上述網址即可遊玩，無需安裝或啟動本機伺服器。
+
+> **注意：** `http://localhost:8765` 僅供在自己電腦上測試用。`localhost` 代表「這台電腦自己」，別人點連結時會連到他們自己的電腦，無法連到你的遊戲。
+
+## 本機測試（僅開發者使用）
+
+請先進入專案資料夾再啟動伺服器（若在錯誤目錄執行，會看到整個使用者資料夾列表而非遊戲）：
 
 ```bash
-cd "114-2國文期末專題"
+git clone https://github.com/real-louis/laocan-youji-game.git
+cd laocan-youji-game
 python3 -m http.server 8765
 ```
 
